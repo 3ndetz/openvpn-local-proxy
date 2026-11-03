@@ -22,4 +22,4 @@ Copy-Item (Join-Path $PSScriptRoot 'start.ps1') $state -Force
 $action=New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$state\start.ps1`""
 $trigger=New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
 Register-ScheduledTask -TaskName 'OpenVPN Local Proxy' -Action $action -Trigger $trigger -RunLevel Highest -Force | Out-Null
-& (Join-Path $state 'start.ps1')
+Start-ScheduledTask -TaskName 'OpenVPN Local Proxy'

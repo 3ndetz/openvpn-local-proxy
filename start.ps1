@@ -9,3 +9,6 @@ if ($ip -notmatch '^\d+\.\d+\.\d+\.\d+$') { throw 'Could not determine WSL IPv4 
 & "$env:windir\System32\netsh.exe" interface portproxy add v4tov4 listenaddress=127.0.0.1 listenport=$($config.Port) connectaddress=$ip connectport=$($config.Port)
 if ($LASTEXITCODE -ne 0) { throw 'Could not configure Windows port forwarding.' }
 Write-Host "Proxy: 127.0.0.1:$($config.Port)"
+
+# Keep the WSL distribution running while the scheduled task is active.
+& $wsl -d $config.Distro -u root -- sleep infinity
