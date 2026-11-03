@@ -19,7 +19,7 @@ $state = Join-Path $env:LOCALAPPDATA 'OpenVPNLocalProxy'
 New-Item -ItemType Directory -Force $state | Out-Null
 Copy-Item (Join-Path $PSScriptRoot 'start.ps1') $state -Force
 @{Distro=$Distro;Port=$Port} | ConvertTo-Json | Set-Content (Join-Path $state 'settings.json') -Encoding UTF8
-$action=New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$state\start.ps1`""
+$action=New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$state\start.ps1`""
 $trigger=New-ScheduledTaskTrigger -AtLogOn -User $env:USERNAME
 Register-ScheduledTask -TaskName 'OpenVPN Local Proxy' -Action $action -Trigger $trigger -RunLevel Highest -Force | Out-Null
 Start-ScheduledTask -TaskName 'OpenVPN Local Proxy'
